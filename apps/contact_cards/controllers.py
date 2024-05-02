@@ -45,7 +45,7 @@ def get_contacts():
     contacts = [] # Complete. 
     return dict(contacts=contacts)
 
-@action('/addContact')
+@action('/addContact', method='POST')
 @action.uses(db, auth.user)
 def addContact():
     print("Making a new blank card...")

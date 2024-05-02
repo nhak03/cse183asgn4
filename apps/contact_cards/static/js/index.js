@@ -14,15 +14,26 @@ app.data = {
     methods: {
         // Complete. 
         addContact(){
-            console.log("you clicked button")
+            // addContact creates a blank card
+            console.log("sending request to make blank card...")
+            axios.post('/addContact', {request: "make_card"}).then(response => {
+                if(response.status === 200){
+                    console.log('blank card added successfully')
+                    // alert('blank card added successfully')
+                }
+                else{
+                    console.log('error on adding blank card')
+                }
+            });
         }
     }
 };
 
 app.vue = Vue.createApp(app.data).mount("#app");
 
-// app.load_data = function () {
-//     // Complete.
-// }
+app.load_data = function () {
+    // Complete.
+}
 
-// app.load_data();
+app.load_data();
+
