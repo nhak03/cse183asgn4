@@ -13,14 +13,16 @@ app.data = {
     },
     methods: {
         // Complete. 
+        addContact(){
+            console.log("you clicked button")
+        }
     }
 };
 
 app.vue = Vue.createApp(app.data).mount("#app");
 
-app.load_data = function () {
-    // Complete.
-}
+// app.load_data = function () {
+//     // Complete.
+// }
 
-app.load_data();
-
+// app.load_data();

@@ -45,5 +45,10 @@ def get_contacts():
     contacts = [] # Complete. 
     return dict(contacts=contacts)
 
-# You can add more methods. 
+@action('/addContact')
+@action.uses(db, auth.user)
+def addContact():
+    print("Making a new blank card...")
+    return dict(status = 200)
 
+# You can add more methods. 
