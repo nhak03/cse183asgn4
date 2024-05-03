@@ -42,11 +42,11 @@ def index():
 @action('/get_contacts')
 @action.uses(db, auth.user)
 def get_contacts():
-    contacts = [] # Complete. 
-    contacts = db(db.contact_card.user_email == get_user_email()).select(orderby=(db.contact_card.id)).as_list()
+    # contacts = [] # Complete. 
+    contacts = db(db.contact_card.user_email == get_user_email()).select().as_list()
     print("Rows found: ", contacts)
     if (contacts):
-        print("Rows found: ", contacts)
+        print("Success, Rows found: ", contacts)
         return dict(status = 200, contacts = contacts)
     else:
         return dict(status = 500)
@@ -55,7 +55,7 @@ def get_contacts():
 @action.uses(db, auth.user)
 def addContact():
     print("Making a new blank card...")
-    id = db.contact_card.insert()
+    id = db.contact_card.insert(user_email = get_user_email())
     if (id):
         print("Inserted blank with record: ", id)
         return dict(status = 200)
@@ -66,8 +66,22 @@ def addContact():
 @action('/editContactName', method='POST')
 @action.uses(db, auth.user)
 def editContactName():
+    # disable to not fuck with db
+    return dict(status = 200)
     print("editContactName:")
     new_name = request.json.get('name')
     print("We got this name from frontend: ", new_name)
+    contacts = [] # Complete. 
+    contacts = db(db.contact_card.user_email == get_user_email()).select().as_list()
 
-    return dict(status = 200)
+    if(not contacts):
+        id = db.contact_card.insert(user_email = get_user_email(), contact_name = new_name)
+        print("add it in with id ", id)
+
+        test_list = db(db.contact_card.contact_name == new_name).select().as_list()
+        print("Test list: ", test_list)
+    
+    
+    if(id):
+        return dict(status = 200)
+    return dict(status = 500)

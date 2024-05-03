@@ -21,9 +21,9 @@ def get_time():
 db.define_table(
     'contact_card',
     Field('user_email', default=get_user_email()),
-    Field('contact_name', 'string'),
-    Field('contact_affiliation', 'string'),
-    Field('contact_description', 'text'),
+    Field('contact_name', 'string', default=''),
+    Field('contact_affiliation', 'string', default=''),
+    Field('contact_description', 'text', default=''),
     Field('contact_image', 'text'),
     Field('card_id', 'string', default=generate_unique_id())
 )

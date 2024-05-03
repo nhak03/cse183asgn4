@@ -52,7 +52,7 @@ app.load_data = function () {
     // Complete.
     axios.get('/get_contacts').then(response => {
         if(response.status === 200){
-            app.vue.contacts = response.contacts;
+            app.vue.contacts = response.data.contacts;
             console.log("Loaded contacts: ", app.vue.contacts);
         }
         else{

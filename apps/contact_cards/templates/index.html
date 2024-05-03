@@ -12,12 +12,13 @@
   <div class="container">
     <h1 class="title">Contacts</h1>
     <div><button class="button is-success" id="add_button" @click="addContact">Add Contact</button></div>
-    <div class="card contact mt-4">
+    <!-- Render the contacts -->>
+    <div class="card contact mt-4" v-for="contact in contacts" :key="contact.card_id">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
             <figure class="photo image is-96x96">
-              <img class="photo" src="https://bulma.io/assets/images/placeholders/96x96.png"/>
+              <img class="photo" src="contact.contact_image || 'https://bulma.io/assets/images/placeholders/96x96.png'"/>
               <input id="file-input" type="file" style="display: none"
               accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
             </figure>
@@ -26,6 +27,7 @@
             <p class="title person-name">
               <input type="text" class="input is-4 title" 
                     name="name"
+                    v-model="contact.contact_name"
                     placeholder="Name"
                     @blur="editContactName"
               />
