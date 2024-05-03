@@ -54,6 +54,7 @@
                     @blur="editDescription($event, contact); contact.isDescriptionEditing = false"
                     :readonly="!contact.isDescriptionEditing"
                     @focus="contact.isDescriptionEditing = true"
+                    @input="setEditFunction($event, 'editDescription', contact)"
             ></textarea> 
         </div>
       </div>

@@ -9,10 +9,18 @@ app.data = {
     data: function() {
         return {
             contacts: [],
+            editFunction: ''
         };
     },
     methods: {
         // Complete. 
+        setEditFunction(event, funcName, contact) {
+            this.editFunction = funcName;
+            const value = event.target.value;
+            console.log("Focusing on ", this.editFunction);
+            console.log("Potential change: ", value);
+            console.log("The relevant contact: ", contact);
+        },
         addContact(){
             // addContact creates a blank card
             console.log("sending request to make blank card...")
@@ -120,7 +128,7 @@ app.load_data = function () {
 }
 
 app.setUpBeforeUnloadListener = function () {
-    console.log("the setup started");
+    // console.log("the setup started");
     window.addEventListener('beforeunload', function(event) {
         // Execute any necessary actions before the page is unloaded
         // For example, call the editDescription function
@@ -128,8 +136,19 @@ app.setUpBeforeUnloadListener = function () {
         console.log("Before unloading the page...");
         this.alert("Unload listener works");
         // Call your editDescription function here if needed
+        
+        axios.get('/testing_unload').then(response => {
+            if(response.status === 200){
+                this.alert("Coolio")
+            }
+            else{
+                this.alert("Couldn't send msg to backend")
+            }
+        })
+
+
     });
-    console.log("the setup worked");
+    // console.log("the setup worked");
 }
 
 app.load_data();
