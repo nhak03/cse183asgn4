@@ -63,6 +63,24 @@ app.data = {
                 console.error("Error:", error);
             });
         },
+        editDescription(event, contact){
+            const value = event.target.value;
+            console.log("Description extracted: ", value);
+            console.log("assoc. card_id: ", contact.card_id);
+            axios.post('/editContactDescription', { description: value, card_id: contact.card_id})
+            .then(response => {
+                if(response.status === 200){
+                    console.log("Card:", contact.card_id);
+                    console.log("New Description: ", value)
+                }
+                else{
+                    console.log("error on description change");
+                }
+            // Handle response as needed
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        },
         deleteContact(contact){
             console.log("You clicked a trash can with id: ", contact.card_id);
             if(contact.contact_name){
@@ -81,7 +99,6 @@ app.data = {
             }).catch(error => {
                 console.error("deleteContact() Error:", error);
             });
-
         }
     }
 };
@@ -102,5 +119,19 @@ app.load_data = function () {
 
 }
 
+app.setUpBeforeUnloadListener = function () {
+    console.log("the setup started");
+    window.addEventListener('beforeunload', function(event) {
+        // Execute any necessary actions before the page is unloaded
+        // For example, call the editDescription function
+        // Note: You may want to adjust this based on your specific requirements
+        console.log("Before unloading the page...");
+        this.alert("Unload listener works");
+        // Call your editDescription function here if needed
+    });
+    console.log("the setup worked");
+}
+
 app.load_data();
 
+app.setUpBeforeUnloadListener();
