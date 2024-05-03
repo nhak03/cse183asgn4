@@ -36,6 +36,8 @@
               <input type="text" class="input is-6" 
                     placeholder="Affiliation"
                     name="affiliation"
+                    v-model="contact.contact_affiliation"
+                    @blur="editContactAffiliation($event, contact)"
               />
             </p>
           </div>

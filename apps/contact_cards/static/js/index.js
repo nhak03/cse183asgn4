@@ -30,7 +30,7 @@ app.data = {
         editContactName(event, contact){
             const value = event.target.value;
             console.log("Name extracted: ", value);
-            console.log("assoc. card_id: ", contact.card_id)
+            console.log("assoc. card_id: ", contact.card_id);
             axios.post('/editContactName', { name: value, card_id: contact.card_id})
             .then(response => {
                 if(response.status === 200){
@@ -44,7 +44,24 @@ app.data = {
             }).catch(error => {
                 console.error("Error:", error);
             });
-            // console.log("End of edit contact")
+        },
+        editContactAffiliation(event, contact){
+            const value = event.target.value;
+            console.log("Affiliation extracted: ", value);
+            console.log("assoc. card_id: ", contact.card_id);
+            axios.post('/editContactAffiliation', { affiliation: value, card_id: contact.card_id})
+            .then(response => {
+                if(response.status === 200){
+                    console.log("Card:", contact.card_id);
+                    console.log("New Affiliation: ", value)
+                }
+                else{
+                    console.log("error on affiliation change");
+                }
+            // Handle response as needed
+            }).catch(error => {
+                console.error("Error:", error);
+            });
         },
         deleteContact(contact){
             console.log("You clicked a trash can with id: ", contact.card_id);

@@ -101,4 +101,22 @@ def editContactName():
     
     return dict(status = 200)
 
+@action('/editContactAffiliation', method='POST')
+@action.uses(db, auth.user)
+def editContactAffiliation():
+    new_affiliation = request.json.get('affiliation')
+    card_to_change = request.json.get('card_id')
+    contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
+
+    if (not contact):
+        id = db.contact_card.insert(user_email = get_user_email(), contact_affiliation = new_affiliation)
+        if (id):
+            return dict(status = 200)
+        
+    row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
+    print("Original contact: ", row_to_update)
+    print("Will change affiliation to: ", new_affiliation)
+    row_to_update.contact_affiliation = new_affiliation
+    row_to_update.update_record()
     
+    return dict(status = 200)
