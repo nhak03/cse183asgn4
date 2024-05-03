@@ -63,6 +63,17 @@ def addContact():
         print("Failed to insert blank")
         return dict(status = 500)
     
+@action('/deleteContact', method='POST')
+@action.uses(db, auth.user)
+def deleteContact():
+    card_to_delete = request.json.get('card_id')
+    row_to_delete = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_delete)).select().first()
+    if row_to_delete:
+        row_to_delete.delete_record()
+        return dict(status = 200)
+    else:
+        return dict(status = 500, error = "can't find that record to delete")
+    
 @action('/editContactName', method='POST')
 @action.uses(db, auth.user)
 def editContactName():
@@ -73,7 +84,14 @@ def editContactName():
     # print("We got this name from frontend: ", new_name)
     contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
 
-    
+    # handle the case where they have no cards
+    if (not contact):
+        id = db.contact_card.insert(user_email = get_user_email(), contact_name = new_name)
+        # print("add it in with id ", id)
+        # test_list = db(db.contact_card.contact_name == new_name).select().as_list()
+        # print("Test list: ", test_list)
+        if (id):
+            return dict(status = 200)
 
     row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
     print("Original contact: ", row_to_update)
@@ -81,5 +99,6 @@ def editContactName():
     row_to_update.contact_name = new_name
     row_to_update.update_record()
     
+    return dict(status = 200)
 
     

@@ -20,6 +20,7 @@ app.data = {
                 if(response.status === 200){
                     console.log('blank card added successfully')
                     // alert('blank card added successfully')
+                    app.load_data()
                 }
                 else{
                     console.log('error on adding blank card')
@@ -44,6 +45,26 @@ app.data = {
                 console.error("Error:", error);
             });
             // console.log("End of edit contact")
+        },
+        deleteContact(contact){
+            console.log("You clicked a trash can with id: ", contact.card_id);
+            if(contact.contact_name){
+                console.log("You will delete: ", contact.contact_name);
+            }
+            axios.post('/deleteContact', { card_id: contact.card_id })
+            .then(response => {
+                if(response.status === 200){
+                    console.log("You deleted: ", contact.contact_name)
+                    app.load_data();
+                }
+                else{
+                    console.log("error on contact deletion");
+                }
+            // Handle response as needed
+            }).catch(error => {
+                console.error("deleteContact() Error:", error);
+            });
+
         }
     }
 };
