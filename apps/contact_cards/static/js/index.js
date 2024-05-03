@@ -25,6 +25,23 @@ app.data = {
                     console.log('error on adding blank card')
                 }
             });
+        },
+        editContactName(event){
+            const value = event.target.value;
+            console.log("Name extracted:", value);
+            axios.post('/editContactName', { name: value })
+            .then(response => {
+                if(response.status === 200){
+                    console.log("Name was successfully changed to ", value);
+                }
+                else{
+                    console.log("error on name change");
+                }
+            // Handle response as needed
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+            // console.log("End of edit contact")
         }
     }
 };
@@ -33,6 +50,16 @@ app.vue = Vue.createApp(app.data).mount("#app");
 
 app.load_data = function () {
     // Complete.
+    axios.get('/get_contacts').then(response => {
+        if(response.status === 200){
+            app.vue.contacts = response.contacts;
+            console.log("Loaded contacts: ", app.vue.contacts);
+        }
+        else{
+            alert("unable to load contacts from backend")
+        }
+    })
+
 }
 
 app.load_data();

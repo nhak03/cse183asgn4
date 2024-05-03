@@ -35,20 +35,39 @@ from .models import get_user_email
 @action.uses('index.html', db, auth.user)
 def index():
     return dict(
-        get_contacts_url = URL('get_contacts'),
+        get_contacts_url = URL('/get_contacts'),
         # Complete. 
     )
 
-@action('get_contacts')
+@action('/get_contacts')
 @action.uses(db, auth.user)
 def get_contacts():
     contacts = [] # Complete. 
-    return dict(contacts=contacts)
+    contacts = db(db.contact_card.user_email == get_user_email()).select(orderby=(db.contact_card.id)).as_list()
+    print("Rows found: ", contacts)
+    if (contacts):
+        print("Rows found: ", contacts)
+        return dict(status = 200, contacts = contacts)
+    else:
+        return dict(status = 500)
 
 @action('/addContact', method='POST')
 @action.uses(db, auth.user)
 def addContact():
     print("Making a new blank card...")
-    return dict(status = 200)
+    id = db.contact_card.insert()
+    if (id):
+        print("Inserted blank with record: ", id)
+        return dict(status = 200)
+    else:
+        print("Failed to insert blank")
+        return dict(status = 500)
+    
+@action('/editContactName', method='POST')
+@action.uses(db, auth.user)
+def editContactName():
+    print("editContactName:")
+    new_name = request.json.get('name')
+    print("We got this name from frontend: ", new_name)
 
-# You can add more methods. 
+    return dict(status = 200)
