@@ -44,7 +44,7 @@ def index():
 def get_contacts():
     # contacts = [] # Complete. 
     contacts = db(db.contact_card.user_email == get_user_email()).select().as_list()
-    print("Rows found: ", contacts)
+    # print("Rows found: ", contacts)
     if (contacts):
         print("Success, Rows found: ", contacts)
         return dict(status = 200, contacts = contacts)
