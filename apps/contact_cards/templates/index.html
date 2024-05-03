@@ -17,7 +17,7 @@
       <div class="card-content">
         <div class="media">
           <div class="media-left">
-            <figure class="photo image is-96x96" @click="editImage">
+            <figure class="photo image is-96x96" @click="editImage(contact)">
               <img class="photo" :src="contact.contact_image ? contact.contact_image : 'https://bulma.io/assets/images/placeholders/96x96.png'"/>
               <input id="file-input" type="file" style="display: none"
               accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">

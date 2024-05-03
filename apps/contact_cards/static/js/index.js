@@ -29,6 +29,19 @@ app.data = {
             const value = event.target.value;
             this.potential_val = value;
         }, 
+        editImage(contact){
+            let identifier;
+            if(contact.contact_name){
+                identifier = contact.contact_name;
+            }
+            else{
+                identifier = contact.card_id;
+            }
+            console.log("You want to edit the image of ", identifier);
+
+            app.click_figure();
+
+        },
         addContact(){
             // addContact creates a blank card
             console.log("sending request to make blank card...")
@@ -137,7 +150,11 @@ app.load_data = function () {
             alert("unable to load contacts from backend")
         }
     })
+}
 
+app.click_figure = function () {
+    let input = document.getElementById("file-input");
+    input.click();
 }
 
 app.setUpBeforeUnloadListener = function () {
