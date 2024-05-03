@@ -66,22 +66,20 @@ def addContact():
 @action('/editContactName', method='POST')
 @action.uses(db, auth.user)
 def editContactName():
-    # disable to not fuck with db
-    return dict(status = 200)
+
     print("editContactName:")
     new_name = request.json.get('name')
-    print("We got this name from frontend: ", new_name)
-    contacts = [] # Complete. 
-    contacts = db(db.contact_card.user_email == get_user_email()).select().as_list()
+    card_to_change = request.json.get('card_id')
+    # print("We got this name from frontend: ", new_name)
+    contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
 
-    if(not contacts):
-        id = db.contact_card.insert(user_email = get_user_email(), contact_name = new_name)
-        print("add it in with id ", id)
+    
 
-        test_list = db(db.contact_card.contact_name == new_name).select().as_list()
-        print("Test list: ", test_list)
+    row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
+    print("Original contact: ", row_to_update)
+    print("Will change name to: ", new_name)
+    row_to_update.contact_name = new_name
+    row_to_update.update_record()
     
+
     
-    if(id):
-        return dict(status = 200)
-    return dict(status = 500)

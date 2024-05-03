@@ -29,7 +29,7 @@
                     name="name"
                     v-model="contact.contact_name"
                     placeholder="Name"
-                    @blur="editContactName"
+                    @blur="editContactName($event, contact)"
               />
             </p>
             <p class="subtitle person-affiliation">

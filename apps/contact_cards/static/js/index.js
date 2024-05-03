@@ -26,13 +26,15 @@ app.data = {
                 }
             });
         },
-        editContactName(event){
+        editContactName(event, contact){
             const value = event.target.value;
-            console.log("Name extracted:", value);
-            axios.post('/editContactName', { name: value })
+            console.log("Name extracted: ", value);
+            console.log("assoc. card_id: ", contact.card_id)
+            axios.post('/editContactName', { name: value, card_id: contact.card_id})
             .then(response => {
                 if(response.status === 200){
-                    console.log("Name was successfully changed to ", value);
+                    console.log("Card:", contact.card_id);
+                    console.log("New Name: ", value)
                 }
                 else{
                     console.log("error on name change");
