@@ -43,7 +43,7 @@ def index():
 @action.uses(db, auth.user)
 def get_contacts():
     # contacts = [] # Complete. 
-    contacts = db(db.contact_card.user_email == get_user_email()).select(orderby=(~db.contact_card.id)).as_list()
+    contacts = db(db.contact_card.user_email == get_user_email()).select(orderby=(db.contact_card.id)).as_list()
     # print("Rows found: ", contacts)
     if (contacts):
         print("Success, Rows found: ", contacts)

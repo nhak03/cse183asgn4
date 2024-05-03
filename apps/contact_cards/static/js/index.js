@@ -9,18 +9,26 @@ app.data = {
     data: function() {
         return {
             contacts: [],
-            editFunction: ''
+            editFunction: '',
+            potential_val: '',
+            potential_contact: null
         };
     },
     methods: {
         // Complete. 
         setEditFunction(event, funcName, contact) {
-            this.editFunction = funcName;
             const value = event.target.value;
-            console.log("Focusing on ", this.editFunction);
+            this.editFunction = funcName;
+            this.potential_val = value;
+            this.potential_contact = contact;
+            // console.log("Focusing on ", this.editFunction);
             console.log("Potential change: ", value);
-            console.log("The relevant contact: ", contact);
+            // console.log("The relevant contact: ", contact);
         },
+        set_val_on_blur(event){
+            const value = event.target.value;
+            this.potential_val = value;
+        }, 
         addContact(){
             // addContact creates a blank card
             console.log("sending request to make blank card...")
@@ -35,10 +43,13 @@ app.data = {
                 }
             });
         },
-        editContactName(event, contact){
-            const value = event.target.value;
+        editContactName(contact){
+            // const value = event.target.value;
+            const value = this.potential_val;
             console.log("Name extracted: ", value);
             console.log("assoc. card_id: ", contact.card_id);
+
+            
             axios.post('/editContactName', { name: value, card_id: contact.card_id})
             .then(response => {
                 if(response.status === 200){
@@ -53,8 +64,9 @@ app.data = {
                 console.error("Error:", error);
             });
         },
-        editContactAffiliation(event, contact){
-            const value = event.target.value;
+        editContactAffiliation(contact){
+            // const value = event.target.value;
+            const value = this.potential_val;
             console.log("Affiliation extracted: ", value);
             console.log("assoc. card_id: ", contact.card_id);
             axios.post('/editContactAffiliation', { affiliation: value, card_id: contact.card_id})
@@ -71,8 +83,9 @@ app.data = {
                 console.error("Error:", error);
             });
         },
-        editDescription(event, contact){
-            const value = event.target.value;
+        editDescription(contact){
+            // const value = event.target.value;
+            const value = this.potential_val;
             console.log("Description extracted: ", value);
             console.log("assoc. card_id: ", contact.card_id);
             axios.post('/editContactDescription', { description: value, card_id: contact.card_id})
@@ -134,21 +147,27 @@ app.setUpBeforeUnloadListener = function () {
         // For example, call the editDescription function
         // Note: You may want to adjust this based on your specific requirements
         console.log("Before unloading the page...");
-        this.alert("Unload listener works");
+        // this.alert("Unload listener works");
         // Call your editDescription function here if needed
         
-        axios.get('/testing_unload').then(response => {
-            if(response.status === 200){
-                this.alert("Coolio")
-            }
-            else{
-                this.alert("Couldn't send msg to backend")
-            }
-        })
+        if (app.vue.editFunction === 'editDescription'){
+            console.log("on refresh, calling editDescription");
+            app.vue.editDescription(app.vue.potential_contact);
+        }
 
+        if (app.vue.editFunction === 'editContactName'){
+            console.log("on refresh, calling editContactName");
+            app.vue.editContactName(app.vue.potential_contact);
+        }
 
+        if (app.vue.editFunction === 'editContactAffiliation'){
+            console.log("on refresh, calling editContactAffiliation");
+            app.vue.editContactAffiliation(app.vue.potential_contact);
+        }
+
+        // debugger;
     });
-    // console.log("the setup worked");
+
 }
 
 app.load_data();

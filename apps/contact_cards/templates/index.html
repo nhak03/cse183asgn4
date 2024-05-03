@@ -17,7 +17,7 @@
       <div class="card-content">
         <div class="media">
           <div class="media-left">
-            <figure class="photo image is-96x96">
+            <figure class="photo image is-96x96" @click="editImage">
               <img class="photo" :src="contact.contact_image ? contact.contact_image : 'https://bulma.io/assets/images/placeholders/96x96.png'"/>
               <input id="file-input" type="file" style="display: none"
               accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
@@ -29,9 +29,10 @@
                     name="name"
                     v-model="contact.contact_name"
                     placeholder="Name"
-                    @blur="editContactName($event, contact); contact.isNameEditing = false"
                     :readonly="!contact.isNameEditing"
                     @focus="contact.isNameEditing = true"
+                    @input="setEditFunction($event, 'editContactName', contact)"
+                    @blur="set_val_on_blur($event); editContactName(contact); contact.isNameEditing = false"
               />
             </p>
             <p class="subtitle person-affiliation">
@@ -39,9 +40,10 @@
                     placeholder="Affiliation"
                     name="affiliation"
                     v-model="contact.contact_affiliation"
-                    @blur="editContactAffiliation($event, contact); contact.isAffiliationEditing = false"
+                    @blur="set_val_on_blur($event); editContactAffiliation(contact); contact.isAffiliationEditing = false"
                     :readonly="!contact.isAffiliationEditing"
                     @focus="contact.isAffiliationEditing = true"
+                    @input="setEditFunction($event, 'editContactAffiliation', contact)"
               />
             </p>
           </div>
@@ -51,7 +53,7 @@
                     name="description"
                     placeholder="Description"
                     v-model="contact.contact_description"
-                    @blur="editDescription($event, contact); contact.isDescriptionEditing = false"
+                    @blur="set_val_on_blur($event); editDescription(contact); contact.isDescriptionEditing = false"
                     :readonly="!contact.isDescriptionEditing"
                     @focus="contact.isDescriptionEditing = true"
                     @input="setEditFunction($event, 'editDescription', contact)"
