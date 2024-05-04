@@ -32,6 +32,7 @@ app.data = {
             this.potential_val = value;
         }, 
         editImage(contact){
+            this.editFunction = 'editImage';
             this.potential_contact = contact;
             let identifier;
             if(contact.contact_name){
@@ -174,6 +175,7 @@ app.click_figure = function () {
                 if(response.status === 200){
                     console.log("Card:", app.vue.potential_contact.card_id);
                     console.log("New Image!!");
+                    app.load_data();
                 }
                 else{
                     console.log("error on image change");
@@ -183,6 +185,11 @@ app.click_figure = function () {
                 console.error("Error:", error);
             });
     });
+    // // Prevent propagation of click event to parent elements
+    // input.addEventListener('click', function(event) {
+    //     event.stopPropagation();
+    // });
+
     input.click();
 }
 
@@ -209,6 +216,11 @@ app.setUpBeforeUnloadListener = function () {
         if (app.vue.editFunction === 'editContactAffiliation'){
             console.log("on refresh, calling editContactAffiliation");
             app.vue.editContactAffiliation(app.vue.potential_contact);
+        }
+
+        if(app.vue.editFunction === 'editImage'){
+            console.log("on refresh, calling editImage");
+            app.vue.editImage(app.vue.potential_contact);
         }
 
         // debugger;
