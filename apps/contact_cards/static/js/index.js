@@ -11,7 +11,9 @@ app.data = {
             contacts: [],
             editFunction: '',
             potential_val: '',
-            potential_contact: null
+            potential_contact: null,
+            img_url: "",
+            file: null
         };
     },
     methods: {
@@ -30,6 +32,7 @@ app.data = {
             this.potential_val = value;
         }, 
         editImage(contact){
+            this.potential_contact = contact;
             let identifier;
             if(contact.contact_name){
                 identifier = contact.contact_name;
@@ -154,6 +157,32 @@ app.load_data = function () {
 
 app.click_figure = function () {
     let input = document.getElementById("file-input");
+    input.addEventListener('change', function(event) {
+        const file = event.target.files[0]; // Access the selected file
+        // console.log("Selected file:", file);
+
+        console.log("Selected file:", file);
+
+        // Create a FormData object to send the file
+        let formData = new FormData();
+        formData.append('img_file', file);
+        formData.append('card_id', app.vue.potential_contact.card_id);
+
+
+        axios.post('/editImage', formData)
+            .then(response => {
+                if(response.status === 200){
+                    console.log("Card:", app.vue.potential_contact.card_id);
+                    console.log("New Image!!");
+                }
+                else{
+                    console.log("error on image change");
+                }
+            // Handle response as needed
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+    });
     input.click();
 }
 

@@ -140,3 +140,40 @@ def editContactDescription():
     row_to_update.update_record()
 
     return dict(status = 200)
+
+@action('/editImage', method='POST')
+@action.uses(db, auth.user)
+def editImage():
+    img_file = request.files.get('img_file')  # Access the uploaded image file
+    card_id = request.forms.get('card_id')  # Access the card_id
+    if img_file:
+        # Process the image file as needed
+        filename = img_file.filename
+        file_data = img_file.file.read()
+        print("Macy's picture: ", filename)
+    else:
+        print("no file found")
+    
+    if card_id:
+        print("We have the associated card id: ", card_id)
+    else:
+        print("No card id was found")
+
+
+    return dict(status = 200)
+    card_to_change = request.json.get('card_id')
+
+    contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
+
+    if (not contact):
+        id = db.contact_card.insert(user_email = get_user_email(), contact_image = new_image)
+        if (id):
+            return dict(status = 200)
+    
+    row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
+    print("Original contact: ", row_to_update)
+    print("Will change image to: ", new_image)
+    row_to_update.contact_image = new_image
+    row_to_update.update_record()
+
+    return dict(status = 200)
