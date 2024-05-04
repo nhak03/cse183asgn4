@@ -32,7 +32,7 @@ app.data = {
             this.potential_val = value;
         }, 
         editImage(contact){
-            this.editFunction = 'editImage';
+            // this.editFunction = 'editImage';
             this.potential_contact = contact;
             let identifier;
             if(contact.contact_name){
@@ -120,6 +120,7 @@ app.data = {
             });
         },
         deleteContact(contact){
+            // debugger;
             console.log("You clicked a trash can with id: ", contact.card_id);
             if(contact.contact_name){
                 console.log("You will delete: ", contact.contact_name);
@@ -185,10 +186,10 @@ app.click_figure = function () {
                 console.error("Error:", error);
             });
     });
-    // // Prevent propagation of click event to parent elements
-    // input.addEventListener('click', function(event) {
-    //     event.stopPropagation();
-    // });
+    // Prevent propagation of click event to parent elements
+    input.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
 
     input.click();
 }
@@ -222,6 +223,8 @@ app.setUpBeforeUnloadListener = function () {
             console.log("on refresh, calling editImage");
             app.vue.editImage(app.vue.potential_contact);
         }
+
+        app.vue.editFunction = '';
 
         // debugger;
     });

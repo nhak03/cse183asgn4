@@ -152,7 +152,12 @@ def editImage():
         # filename = img_file.filename
         file_data = img_file.file.read()
         img_base64 = base64.b64encode(file_data).decode('utf-8')
-        db(db.contact_card.card_id == card_id).update(contact_image=img_base64)
+
+        # db(db.contact_card.card_id == card_id).update(contact_image=img_base64)
+        row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_id)).select().first()
+        row_to_update.contact_image = img_base64
+        row_to_update.update_record()
+
         # print("Macy's picture: ", filename)
         return dict(status = 200)
     else:

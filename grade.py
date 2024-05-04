@@ -254,7 +254,8 @@ class Assignment(ProtoAssignment):
         title = self.browser.find_element(By.CSS_SELECTOR, "h1.title")
         # We add a new contact. 
         self.browser.find_element(By.CSS_SELECTOR, "button#add_button").click()
-        time.sleep(SERVER_WAIT)
+        print("Step 5 add button pressed")
+        # time.sleep(5)
         # Then, we check that contact 0 still contains the original contact. 
         c0 = self.get_contacts()[0]
         i_name0 = c0.find_element(By.CSS_SELECTOR, "input[name='name']")
@@ -329,9 +330,12 @@ class Assignment(ProtoAssignment):
         time.sleep(0.2)
         contacts = self.get_contacts()
         assert len(contacts) == 0, "S7-1 User 2 should not see any contacts."
+        print("Logging in as user 1")
         self.login(self.user1)
-        time.sleep(0.2)
+        time.sleep(5)
         contacts = self.get_contacts()
+        print("User 1 contact count: ", len(contacts))
+        # time.sleep(1000)
         assert len(contacts) == 2, "S7-2 User 1 should see two contacts."
         self.login(self.user2)
         time.sleep(0.2)

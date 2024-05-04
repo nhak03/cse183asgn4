@@ -13,7 +13,7 @@
     <h1 class="title">Contacts</h1>
     <div><button class="button is-success" id="add_button" @click="addContact">Add Contact</button></div>
     <!-- Render the contacts -->>
-    <div class="card contact mt-4" v-for="contact in contacts" :key="contact.card_id">
+    <div class="contact" v-for="contact in contacts" :key="contact.card_id">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
