@@ -141,39 +141,35 @@ def editContactDescription():
 
     return dict(status = 200)
 
+import base64
 @action('/editImage', method='POST')
 @action.uses(db, auth.user)
 def editImage():
     img_file = request.files.get('img_file')  # Access the uploaded image file
     card_id = request.forms.get('card_id')  # Access the card_id
-    if img_file:
+    if img_file and card_id:
         # Process the image file as needed
         filename = img_file.filename
         file_data = img_file.file.read()
-        print("Macy's picture: ", filename)
+        img_base64 = base64.b64encode(file_data).decode('utf-8')
+        db(db.contact_card.card_id == card_id).update(contact_image=img_base64)
+        # print("Macy's picture: ", filename)
+        return dict(status = 200)
     else:
         print("no file found")
+    # card_to_change = request.json.get('card_id')
+
+    # contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
+
+    # if (not contact):
+    #     id = db.contact_card.insert(user_email = get_user_email(), contact_image = new_image)
+    #     if (id):
+    #         return dict(status = 200)
     
-    if card_id:
-        print("We have the associated card id: ", card_id)
-    else:
-        print("No card id was found")
+    # row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
+    # print("Original contact: ", row_to_update)
+    # print("Will change image to: ", new_image)
+    # row_to_update.contact_image = new_image
+    # row_to_update.update_record()
 
-
-    return dict(status = 200)
-    card_to_change = request.json.get('card_id')
-
-    contact = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().as_list()
-
-    if (not contact):
-        id = db.contact_card.insert(user_email = get_user_email(), contact_image = new_image)
-        if (id):
-            return dict(status = 200)
-    
-    row_to_update = db((db.contact_card.user_email == get_user_email()) & (db.contact_card.card_id == card_to_change)).select().first()
-    print("Original contact: ", row_to_update)
-    print("Will change image to: ", new_image)
-    row_to_update.contact_image = new_image
-    row_to_update.update_record()
-
-    return dict(status = 200)
+    # return dict(status = 200)
